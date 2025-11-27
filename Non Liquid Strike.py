@@ -55,4 +55,26 @@ def algo_react(human_price):
 # -----------------------------
 # STREAMLIT UI
 # -----------------------------
-st.title("Option Chain Simulato
+st.title("Option Chain Simulator - Non-liquid Strike")
+st.write(f"Fair price: ₹{fair_price}")
+st.write(f"Algo initial bid/ask: ₹{state['algo_bid']}/{state['algo_ask']}")
+st.write("")
+
+# User inputs
+human_price = st.number_input("Enter human buy order price (₹):", min_value=0, step=1)
+submit_order = st.button("Submit Human Order")
+
+if submit_order:
+    state["human_orders"].append(human_price)
+    st.write(f"Human placed order at ₹{human_price}")
+
+    transaction = algo_react(human_price)
+
+    # Show current algo bid/ask
+    st.write(f"Current Algo bid/ask: ₹{state['algo_bid']}/{state['algo_ask']}")
+
+    # Show all transactions
+    if state["transactions"]:
+        st.write("### Transactions")
+        for t in state["transactions"]:
+            st.write(f"Buyer: {t['buyer']}, Seller: {t['seller']}, Price: ₹{t['price']}")
